@@ -6,20 +6,21 @@ from .utils import buscar_solucion_BFS, Nodo
 @api_view(['GET'])
 def lista_ciudades(request):
     conexiones = {
-        'Jiloyork': ['Celaya', 'CDMX', 'Queretaro'],
-        'Sonora': ['Zacatecas', 'Sinaloa'],
-        'Guanajuato': ['Aguascalientes'],
-        'Oaxaca': ['Queretaro'],
-        'Sinaloa': ['Celaya', 'Sonora', 'Jiloyork'],
-        'Queretaro': ['Tamaulipas', 'Zacatecas', 'Sinaloa', 'Jiloyork', 'Oaxaca'],
-        'Celaya': ['Jiloyork', 'Sinaloa'],
-        'Zacatecas': ['Sonora', 'Monterrey', 'Queretaro'],
-        'Monterrey': ['Zacatecas', 'Sinaloa'],
-        'Tamaulipas': ['Queretaro'],
-        'Aguascalientes': [],
-        'CDMX': []
+        'Jiloyork': {'Celaya', 'CDMX', 'Queretaro'},
+        'Sonora': {'Zacatecas', 'Sinaloa'},
+        'Guanajuato': {'Aguascalientes'},
+        'Oaxaca': {'Queretaro'},
+        'Sinaloa': {'Celaya', 'Sonora', 'Jiloyork'},
+        'Queretaro': {'Monterrey'},
+        'Celaya': {'Jiloyork', 'Sinaloa'},
+        'Zacatecas': {'Sonora', 'Monterrey', 'Queretaro'},
+        'Monterrey': {'Zacatecas', 'Sinaloa'},
+        'Tamaulipas': {'Queretaro'},
+        'Queretaro': {'Tamaulipas', 'Zacatecas', 'Sinaloa', 'Jiloyork', 'Oaxaca'},
+        'Aguascalientes': {},
+        'CDMX': {}
     }
-    # Extraemos solo los nombres (las llaves del diccionario)
+
     ciudades = sorted(list(conexiones.keys()))
     return Response({'ciudades': ciudades})
 
@@ -40,12 +41,9 @@ def ruta_vuelo(request):
         'Aguascalientes': {},
         'CDMX': {}
     }
-    #conexiones = request.data.get('conexiones')
+
     origen = request.data.get('origen')
     destino = request.data.get('destino')
-
-    # if not conexiones or not origen or not destino:
-    #     return Response({'error:', 'Faltan datos'})
 
     nodo_solucion = buscar_solucion_BFS(conexiones, origen, destino)
 
